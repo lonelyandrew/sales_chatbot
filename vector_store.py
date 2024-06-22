@@ -126,26 +126,14 @@ def generate_corpus(domain: str, count: int, corpus_path: Path, exist_ok: bool =
 
 
 def main() -> None:
-    domain: str = "教育"
-    qa_pairs_count: int = 100
-    corpus_dir: Path = Path(f"corpus/{domain}")
-    corpus_dir.mkdir(parents=True, exist_ok=True)
-    corpus_path: Path = corpus_dir / "corpus.json"
-    if not corpus_path.exists():
-        generate_corpus(domain, qa_pairs_count, corpus_path)
-    vst: VST = insert_docs_into_vector_store(corpus_path, exist_ok=False)
-    retriever: VectorStoreRetriever = vst.as_retriever(
-        search_type="similarity_score_threshold",
-        search_kwargs={"score_threshold": 0.6},
-    )
-
-    while True:
-        query: str = input("> ")
-        if query == ":q":
-            break
-        docs = retriever.invoke(query)
-        for doc in docs:
-            print(doc.page_content + "\n")
+    for domain in ["电器", "家装", "教育"]:
+        qa_pairs_count: int = 100
+        corpus_dir: Path = Path(f"corpus/{domain}")
+        corpus_dir.mkdir(parents=True, exist_ok=True)
+        corpus_path: Path = corpus_dir / "corpus.json"
+        if not corpus_path.exists():
+            generate_corpus(domain, qa_pairs_count, corpus_path)
+        insert_docs_into_vector_store(corpus_path, exist_ok=False)
 
 
 if __name__ == "__main__":

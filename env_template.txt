@@ -1,0 +1,3 @@
+API_KEY=
+BASE_URL=
+EMBEDDING_MODEL=text-embedding-ada-002
